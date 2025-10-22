@@ -13,12 +13,21 @@ Generate diff
 Usage:
   gendiff (-h|--help)
   gendiff (-v|--version)
+  gendiff [--format <fmt>] <firstFile> <secondFile>
 
 Options:
   -h --help                     Show this screen
   -v --version                  Show version
+  --format <fmt>                Report format [default: stylish]
 DOC;
 
-Docopt::handle($doc, [
+$args = Docopt::handle($doc, [
         'version' => APP_VERSION,
 ]);
+
+if (isset($args['--format'])) {
+    echo "Format: " . $args['--format'] . PHP_EOL;
+}
+if (isset($args['<firstFile>'], $args['<secondFile>'])) {
+    echo "Files: " . $args['<firstFile>'] . " , " . $args['<secondFile>'] . PHP_EOL;
+}
