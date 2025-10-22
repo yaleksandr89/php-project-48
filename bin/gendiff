@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use function Gendiff\Parsing\parseFile;
+use function Gendiff\genDiff;
 
 const APP_VERSION = 'gendiff 0.1.0';
 
@@ -31,12 +31,5 @@ $first = $args['<firstFile>'] ?? null;
 $second = $args['<secondFile>'] ?? null;
 
 if ($first !== null && $second !== null) {
-    $data1 = parseFile($first);
-    $data2 = parseFile($second);
-
-    echo "=== File #1 ===" . PHP_EOL;
-    print_r($data1);
-
-    echo "=== File #2 ===" . PHP_EOL;
-    print_r($data2);
+    echo genDiff($first, $second) . PHP_EOL;
 }
