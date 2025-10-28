@@ -1,8 +1,17 @@
 install:
-	composer install && composer dumpautoload -o
+	composer install
+
+refresh:
+	composer install && composer dump-autoload
+
+validate:
+	composer validate
 
 lint:
-	vendor/bin/phpcs --standard=PSR12 src bin tests
+	composer exec --verbose phpcs -- --standard=PSR12 src bin
 
 test:
-	vendor/bin/phpunit
+	composer exec phpunit -- --colors=always
+
+test-coverage:
+	vendor/bin/phpunit --coverage-clover build/logs/clover.xml
