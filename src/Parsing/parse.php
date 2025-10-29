@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace Gendiff\Parsing;
 
 use JsonException;
-use RuntimeException;
 
 /**
+ * @throws ParseException
  * @throws JsonException
  */
 function parseFile(string $filePath): array
 {
     $realPath = realpath($filePath);
     if ($realPath === false) {
-        throw new \RuntimeException("File not found: {$filePath}");
+        throw new ParseException("File not found: {$filePath}");
     }
 
-    $content = file_get_contents($realPath);
+    $content = @file_get_contents($realPath);
     if ($content === false) {
-        throw new RuntimeException("Cannot read file: {$filePath}");
+        throw new ParseException("Cannot read file: {$filePath}");
     }
 
     /** @var array|null $data */
