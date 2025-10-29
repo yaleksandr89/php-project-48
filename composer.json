@@ -2,6 +2,7 @@
   "name": "hexlet/code",
   "description": "Difference calculator (JSON/YAML) with stylish, plain, json formatters",
   "type": "library",
+  "license": "proprietary",
   "require": {
     "php": ">=8.1",
     "symfony/yaml": "^7.0",
