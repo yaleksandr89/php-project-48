@@ -37,19 +37,20 @@ make install
 
 ## Использование
 
-После установки команда `gendiff` будет доступна глобально (если путь настроен). Посмотреть справку:
+После установки команда `gendiff` будет доступна глобально (если путь настроен).  
+Посмотреть справку:
 
 ```bash
 gendiff -h
 ```
 
-Сравнение двух JSON файлов:
+Пример сравнения двух файлов (на примере JSON):
 
 ```bash
 gendiff tests/Fixtures/file1.json tests/Fixtures/file2.json
 ```
 
-Пример вывода:
+Результат:
 
 ```bash
 {
@@ -66,7 +67,9 @@ gendiff tests/Fixtures/file1.json tests/Fixtures/file2.json
 
 ## Демонстрация работы
 
-[![asciinema gendiff demo](https://asciinema.org/a/loUSAgY5zyindr10qJsLl0Wvr.svg)](https://asciinema.org/a/loUSAgY5zyindr10qJsLl0Wvr)
+### Сравнение JSON-файлов
+
+[![asciinema gendiff JSON demo](https://asciinema.org/a/loUSAgY5zyindr10qJsLl0Wvr.svg)](https://asciinema.org/a/loUSAgY5zyindr10qJsLl0Wvr)
 
 **В записи показано:**
 - Запуск команды `gendiff`
@@ -75,30 +78,14 @@ gendiff tests/Fixtures/file1.json tests/Fixtures/file2.json
 
 ---
 
-## Поддерживаемые форматы
+### Сравнение YAML-файлов
 
-- JSON
+[![asciinema gendiff YAML demo](https://asciinema.org/a/8vvsWhdtuDi9X5W0IQmD8Anpt.svg)](https://asciinema.org/a/8vvsWhdtuDi9X5W0IQmD8Anpt)
 
----
-
-## Форматы вывода
-
-- **stylish** — древовидное форматирование (по умолчанию)
-- **plain** — плоский человекочитаемый текст
-- **json** — JSON-структура для машинной обработки
-
----
-
-## Используемые технологии
-
-- PHP 8.3
-- Composer
-- PHPUnit
-- PHP_CodeSniffer
-- Docopt
-- Symfony YAML
-
----
+**В записи показано:**
+- Запуск команды `gendiff`
+- Сравнение двух YAML-файлов
+- Отображение различий в формате *stylish*
 
 ## Основные команды
 
