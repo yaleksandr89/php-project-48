@@ -19,20 +19,22 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
         $inFirst = array_key_exists($key, $data1);
         $inSecond = array_key_exists($key, $data2);
 
+        $prefix = ' ';
+
         if ($inFirst && !$inSecond) {
-            return "  - {$key}: " . toString($data1[$key]);
-        }
-
-        if (!$inFirst && $inSecond) {
-            return "  + {$key}: " . toString($data2[$key]);
-        }
-
-        if ($inFirst && $inSecond && $data1[$key] !== $data2[$key]) {
+            $prefix = '-';
+            $value = toString($data1[$key]);
+        } elseif (!$inFirst && $inSecond) {
+            $prefix = '+';
+            $value = toString($data2[$key]);
+        } elseif ($inFirst && $inSecond && $data1[$key] !== $data2[$key]) {
             return "  - {$key}: " . toString($data1[$key]) . PHP_EOL
                 . "  + {$key}: " . toString($data2[$key]);
+        } else {
+            $value = toString($data1[$key]);
         }
 
-        return "    {$key}: " . toString($data1[$key]);
+        return "  {$prefix} {$key}: {$value}";
     }, $sortedKeys);
 
     return "{\n" . implode(PHP_EOL, $lines) . "\n}";
