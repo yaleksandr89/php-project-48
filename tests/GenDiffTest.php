@@ -5,6 +5,7 @@ namespace Gendiff\Tests;
 use Gendiff\Parsing\ParseException;
 use JsonException;
 use PHPUnit\Framework\TestCase;
+use ReflectionFunction;
 
 use function Gendiff\genDiff;
 use function Gendiff\Parsing\parseFile;
@@ -66,5 +67,12 @@ class GenDiffTest extends TestCase
         EXPECTED;
 
         $this->assertSame($expected, genDiff($file, $file));
+    }
+
+    public function testToStringWithNullValue(): void
+    {
+        $ref = new ReflectionFunction('Gendiff\\toString');
+        $result = $ref->invoke(null);
+        $this->assertSame('null', $result);
     }
 }
