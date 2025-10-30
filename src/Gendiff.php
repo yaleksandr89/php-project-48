@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Gendiff;
 
+use Gendiff\Formatters\FormattersException;
 use Gendiff\Parsing\ParseException;
+use InvalidArgumentException;
 use JsonException;
 
 use function Gendiff\Differ\buildDiff;
@@ -14,6 +16,7 @@ use function Gendiff\Parsing\parseFile;
 /**
  * @throws ParseException
  * @throws JsonException
+ * @throws FormattersException
  */
 function genDiff(string $path1, string $path2, string $format = 'stylish'): string
 {
@@ -22,7 +25,10 @@ function genDiff(string $path1, string $path2, string $format = 'stylish'): stri
 
     $diff = buildDiff($data1, $data2);
 
-    return stylish($diff);
+    return match ($format) {
+        'stylish' => stylish($diff),
+        default => throw new InvalidArgumentException("Unsupported format: {$format}"),
+    };
 }
 
 function toString(mixed $value): string

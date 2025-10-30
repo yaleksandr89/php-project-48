@@ -9,6 +9,7 @@ use ReflectionFunction;
 
 use function Gendiff\genDiff;
 use function Gendiff\Parsing\parseFile;
+use function Gendiff\toString;
 
 class GenDiffTest extends TestCase
 {
@@ -74,5 +75,14 @@ class GenDiffTest extends TestCase
         $ref = new ReflectionFunction('Gendiff\\toString');
         $result = $ref->invoke(null);
         $this->assertSame('null', $result);
+    }
+
+    public function testToStringCoversAllBranches(): void
+    {
+        $this->assertSame('true', toString(true));
+        $this->assertSame('false', toString(false));
+        $this->assertSame('null', toString(null));
+        $this->assertSame('123', toString(123));
+        $this->assertSame('text', toString('text'));
     }
 }
