@@ -13,31 +13,20 @@ function buildDiff(array $data1, array $data2): array
         $value1 = $data1[$key] ?? null;
         $value2 = $data2[$key] ?? null;
 
+        $result = ['key' => $key];
+
         if (!array_key_exists($key, $data1)) {
-            return ['key' => $key, 'type' => 'added', 'value' => $value2];
+            $result += ['type' => 'added', 'value' => $value2];
+        } elseif (!array_key_exists($key, $data2)) {
+            $result += ['type' => 'removed', 'value' => $value1];
+        } elseif (is_array($value1) && is_array($value2)) {
+            $result += ['type' => 'nested', 'children' => buildDiff($value1, $value2)];
+        } elseif ($value1 !== $value2) {
+            $result += ['type' => 'changed', 'oldValue' => $value1, 'newValue' => $value2];
+        } else {
+            $result += ['type' => 'unchanged', 'value' => $value1];
         }
 
-        if (!array_key_exists($key, $data2)) {
-            return ['key' => $key, 'type' => 'removed', 'value' => $value1];
-        }
-
-        if (is_array($value1) && is_array($value2)) {
-            return [
-                'key' => $key,
-                'type' => 'nested',
-                'children' => buildDiff($value1, $value2)
-            ];
-        }
-
-        if ($value1 !== $value2) {
-            return [
-                'key' => $key,
-                'type' => 'changed',
-                'oldValue' => $value1,
-                'newValue' => $value2
-            ];
-        }
-
-        return ['key' => $key, 'type' => 'unchanged', 'value' => $value1];
+        return $result;
     }, $keys);
 }

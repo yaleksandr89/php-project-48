@@ -58,9 +58,7 @@ function parseFile(string $path): array
             } catch (ParseException $e) {
                 throw new ParseException($e->getMessage(), previous: $e);
             }
-            /** @var array $normalized */
-            $normalized = normalize($data);
-            return $normalized;
+            return normalize($data);
         })(),
         default => throw new ParseException("Unsupported format: .{$ext}"),
     };
