@@ -10,11 +10,11 @@ validate:
 lint:
 	composer exec --verbose phpcs -- --standard=PSR12 --error-severity=1 --warning-severity=1 src bin tests
 
+lint-fix:
+	composer exec phpcbf -- --standard=PSR12 src bin tests
+
 test:
 	composer exec phpunit -- --colors=always
 
-test-coverage:
-	vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-
-fix:
-	composer exec phpcbf -- --standard=PSR12 src bin tests
+gendiff-nested:
+	./bin/gendiff tests/Fixtures/nested_file1.json tests/Fixtures/nested_file2.json

@@ -19,17 +19,52 @@
 
 ## Описание проекта
 
-**Gendiff** — утилита для сравнения двух конфигурационных файлов.  
-Поддерживает форматы **JSON** и **YAML**.  
-Результат можно выводить в нескольких форматах — **stylish**, **plain**, **json**.
+**Gendiff** — CLI-утилита на PHP 8.3 для сравнения конфигурационных файлов **JSON** и **YAML**. Определяет различия между файлами, формируя иерархическое diff-дерево с поддержкой
+вложенных структур. Поддерживает несколько форматов вывода: `stylish`, `plain`, `json`.
+
+## Технологии
+
+- PHP 8.3
+- PHPUnit 11
+- Symfony YAML
+- Composer Autoload (PSR-4)
+- PSR-12 code style
+- Makefile automation
+- GitHub Actions + SonarCloud (для CI/CD и анализа качества кода)
+
+## Структура проекта
+
+```
+src/
+ ├── Differ/             # Построение дерева различий
+ ├── Formatters/         # Форматтеры вывода (stylish, plain, json)
+ ├── Parsing/            # Чтение и нормализация файлов
+ ├── Gendiff.php         # Главный фасад проекта
+tests/
+ ├── Fixtures/           # Тестовые данные
+ ├── GenDiffTest.php
+ ├── GenDiffNestedTest.php
+```
+
+## Команды Makefile
+
+| Команда               | Назначение                                         |
+|-----------------------|----------------------------------------------------|
+| `make install`        | Установить зависимости Composer                    |
+| `make refresh`        | Установить зависимости и перегенерировать autoload |
+| `make validate`       | Проверить корректность composer.json               |
+| `make lint`           | Проверить код по стандарту PSR-12                  |
+| `make lint-fix`       | Автоматически исправить ошибки форматирования      |
+| `make test`           | Запустить PHPUnit-тесты с подсветкой               |
+| `make gendiff-nested` | Проверить работу утилиты на вложенных JSON-файлах  |
 
 ---
 
 ## Установка
 
 ```bash
-git clone https://github.com/yaleksandr89/php-project-48.git
-cd php-project-48
+git clone https://github.com/<твой-username>/gendiff.git
+cd gendiff
 make install
 ```
 
@@ -72,6 +107,7 @@ gendiff tests/Fixtures/file1.json tests/Fixtures/file2.json
 [![asciinema gendiff JSON demo](https://asciinema.org/a/loUSAgY5zyindr10qJsLl0Wvr.svg)](https://asciinema.org/a/loUSAgY5zyindr10qJsLl0Wvr)
 
 **В записи показано:**
+
 - Запуск команды `gendiff`
 - Сравнение двух JSON-файлов
 - Отображение различий в формате *stylish* (по умолчанию)
@@ -83,19 +119,48 @@ gendiff tests/Fixtures/file1.json tests/Fixtures/file2.json
 [![asciinema gendiff YAML demo](https://asciinema.org/a/8vvsWhdtuDi9X5W0IQmD8Anpt.svg)](https://asciinema.org/a/8vvsWhdtuDi9X5W0IQmD8Anpt)
 
 **В записи показано:**
+
 - Запуск команды `gendiff`
 - Сравнение двух YAML-файлов
 - Отображение различий в формате *stylish*
 
-## Основные команды
+### Сравнение вложенных JSON-файлов (Nested Diff)
 
-```bash
-make install                  # Установка зависимостей
-make refresh                  # Переустановка + обновление автозагрузки
-make validate                 # Проверка composer.json
-make lint                     # Проверка кода по PSR-12
-make test                     # Запуск тестов
-make test-coverage            # Генерация отчёта покрытия
-gendiff -h                    # Справка по утилите
-gendiff <file-1> <file-2>     # Сравнение файлов
-```
+[![asciinema gendiff JSON demo](https://asciinema.org/a/Kiw724OEGT3Tg4UYCtuXALXr6.svg)](https://asciinema.org/a/Kiw724OEGT3Tg4UYCtuXALXr6)
+
+**В записи показано:**
+
+- Запуск команды `gendiff`
+- Сравнение двух **вложенных JSON-файлов**
+- Корректная обработка многоуровневых структур
+- Формирование иерархического diff-дерева
+- Отображение различий в формате *stylish* (по умолчанию)
+
+---
+
+### Сравнение вложенных YAML-файлов (Nested Diff)
+
+[![asciinema gendiff YAML demo](https://asciinema.org/a/IjDFr7dv9Fl98jMA7emj79AYt.svg)](https://asciinema.org/a/IjDFr7dv9Fl98jMA7emj79AYt)
+
+**В записи показано:**
+
+- Запуск команды `gendiff`
+- Сравнение двух **вложенных YAML-файлов**
+- Корректная обработка многоуровневых структур
+- Формирование иерархического diff-дерева
+- Отображение различий в формате *stylish* (по умолчанию)
+
+### Запуск тестов проекта
+
+[![asciinema gendiff YAML demo](https://asciinema.org/a/j49B9HGAK3mlPWsfdFEU0VDQQ.svg)](https://asciinema.org/a/j49B9HGAK3mlPWsfdFEU0VDQQ)
+
+**В записи показано:**
+
+- Запуск команды `make test`
+- Выполнение всех unit-тестов через PHPUnit 11
+- Проверка корректности всех сценариев:
+  - Flat JSON и YAML
+  - Nested JSON и YAML
+  - Исключения при ошибках парсинга
+  - Проверка функции `toString()`
+- Финальный результат: **OK (8 tests, 8 assertions)**

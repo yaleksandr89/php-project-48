@@ -4,40 +4,25 @@ declare(strict_types=1);
 
 namespace Gendiff;
 
-use function Funct\Collection\sortBy;
+use Gendiff\Parsing\ParseException;
+use JsonException;
+
+use function Gendiff\Differ\buildDiff;
+use function Gendiff\Formatters\stylish;
 use function Gendiff\Parsing\parseFile;
 
-function genDiff(string $pathToFile1, string $pathToFile2): string
+/**
+ * @throws ParseException
+ * @throws JsonException
+ */
+function genDiff(string $path1, string $path2, string $format = 'stylish'): string
 {
-    $data1 = parseFile($pathToFile1);
-    $data2 = parseFile($pathToFile2);
+    $data1 = parseFile($path1);
+    $data2 = parseFile($path2);
 
-    $allKeys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
-    $sortedKeys = sortBy($allKeys, fn($key) => $key);
+    $diff = buildDiff($data1, $data2);
 
-    $lines = array_map(static function (string $key) use ($data1, $data2) {
-        $inFirst = array_key_exists($key, $data1);
-        $inSecond = array_key_exists($key, $data2);
-
-        $prefix = ' ';
-
-        if ($inFirst && !$inSecond) {
-            $prefix = '-';
-            $value = toString($data1[$key]);
-        } elseif (!$inFirst && $inSecond) {
-            $prefix = '+';
-            $value = toString($data2[$key]);
-        } elseif ($inFirst && $inSecond && $data1[$key] !== $data2[$key]) {
-            return "  - {$key}: " . toString($data1[$key]) . PHP_EOL
-                . "  + {$key}: " . toString($data2[$key]);
-        } else {
-            $value = toString($data1[$key]);
-        }
-
-        return "  {$prefix} {$key}: {$value}";
-    }, $sortedKeys);
-
-    return "{\n" . implode(PHP_EOL, $lines) . "\n}";
+    return stylish($diff);
 }
 
 function toString(mixed $value): string
@@ -50,5 +35,5 @@ function toString(mixed $value): string
         return 'null';
     }
 
-    return (string) $value;
+    return (string)$value;
 }

@@ -6,28 +6,62 @@ namespace Gendiff\Parsing;
 
 use JsonException;
 use Symfony\Component\Yaml\Yaml;
+use Gendiff\Parsing\ParseException;
+
+/**
+ * Рекурсивно приводит stdClass к массивам.
+ */
+function normalize(mixed $value): mixed
+{
+    if (is_object($value)) {
+        $value = get_object_vars($value);
+    }
+
+    if (is_array($value)) {
+        $result = [];
+        foreach ($value as $k => $v) {
+            $result[$k] = normalize($v);
+        }
+        return $result;
+    }
+
+    return $value;
+}
+
 
 /**
  * @throws ParseException
  * @throws JsonException
  */
-function parseFile(string $filePath): array
+function parseFile(string $path): array
 {
-    $realPath = realpath($filePath);
-    if ($realPath === false) {
-        throw new ParseException('File not found: ' . $filePath);
+    if (!file_exists($path)) {
+        throw new ParseException("File not found: {$path}");
     }
 
-    $content = @file_get_contents($realPath);
+    if (!is_readable($path)) {
+        throw new ParseException("File is not readable: {$path}");
+    }
+
+    $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+    $content = file_get_contents($path);
     if ($content === false) {
-        throw new ParseException('Cannot read file: ' . $filePath);
+        throw new ParseException("Failed to read file: {$path}");
     }
 
-    $ext = pathinfo($realPath, PATHINFO_EXTENSION);
-
-    return match (strtolower($ext)) {
+    return match ($ext) {
         'json' => json_decode($content, true, 512, JSON_THROW_ON_ERROR),
-        'yaml', 'yml' => (array) Yaml::parse($content, Yaml::PARSE_OBJECT_FOR_MAP),
-        default => throw new ParseException('Unsupported file format: ' . $ext),
+        'yml', 'yaml' => (static function () use ($path) {
+            try {
+                $data = Yaml::parseFile($path, Yaml::PARSE_OBJECT_FOR_MAP);
+            } catch (ParseException $e) {
+                throw new ParseException($e->getMessage(), previous: $e);
+            }
+            /** @var array $normalized */
+            $normalized = normalize($data);
+            return $normalized;
+        })(),
+        default => throw new ParseException("Unsupported format: .{$ext}"),
     };
 }

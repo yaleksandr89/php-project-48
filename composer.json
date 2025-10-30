@@ -18,8 +18,10 @@
       "Gendiff\\": "src/"
     },
     "files": [
+      "src/Gendiff.php",
       "src/Parsing/parse.php",
-      "src/Gendiff.php"
+      "src/Differ/buildDiff.php",
+      "src/Formatters/stylish.php"
     ]
   },
   "autoload-dev": {
