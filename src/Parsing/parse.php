@@ -6,7 +6,7 @@ namespace Gendiff\Parsing;
 
 use JsonException;
 use Symfony\Component\Yaml\Yaml;
-use Gendiff\Parsing\ParseException;
+use Symfony\Component\Yaml\Exception\ParseException as YamlParseException;
 
 /**
  * Рекурсивно приводит stdClass к массивам.
@@ -39,24 +39,27 @@ function parseFile(string $path): array
         throw new ParseException("File not found: {$path}");
     }
 
+    if (!is_file($path)) {
+        throw new ParseException("Failed to read file: {$path}");
+    }
+
     if (!is_readable($path)) {
         throw new ParseException("File is not readable: {$path}");
     }
 
+    $content = @file_get_contents($path);
     $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
-
-    $content = file_get_contents($path);
-    if ($content === false) {
-        throw new ParseException("Failed to read file: {$path}");
-    }
 
     return match ($ext) {
         'json' => json_decode($content, true, 512, JSON_THROW_ON_ERROR),
         'yml', 'yaml' => (static function () use ($path) {
             try {
                 $data = Yaml::parseFile($path, Yaml::PARSE_OBJECT_FOR_MAP);
-            } catch (ParseException $e) {
-                throw new ParseException($e->getMessage(), previous: $e);
+            } catch (YamlParseException $e) {
+                throw new ParseException(
+                    "YAML parse error in {$path}: " . $e->getMessage(),
+                    previous: $e
+                );
             }
             return normalize($data);
         })(),

@@ -73,4 +73,76 @@ class GenDiffNestedTest extends TestCase
         $result = stylish($diff);
         $this->assertStringContainsString('value: 42', $result);
     }
+
+    /**
+     * @throws FormattersException
+     */
+    public function testStylishHandlesEmptyArrayValue(): void
+    {
+        $diff = [
+            [
+                'type' => 'added',
+                'key' => 'empty',
+                'value' => [],
+            ],
+        ];
+
+        $result = stylish($diff);
+        $this->assertStringContainsString('empty: {', $result);
+    }
+
+    /**
+     * @throws FormattersException
+     */
+    public function testStylishHandlesEmptyInnerArray(): void
+    {
+        $diff = [
+            [
+                'type' => 'nested',
+                'key' => 'emptyBlock',
+                'children' => [
+                    [
+                        'type' => 'added',
+                        'key' => 'child',
+                        'value' => [],
+                    ],
+                ],
+            ],
+        ];
+
+        $result = stylish($diff);
+        $this->assertStringContainsString('child: {', $result);
+    }
+
+    /**
+     * @throws FormattersException
+     */
+    public function testStylishHandlesEmptyValuesInArray(): void
+    {
+        $diff = [
+            [
+                'type' => 'nested',
+                'key' => 'config',
+                'children' => [
+                    [
+                        'type' => 'added',
+                        'key' => 'options',
+                        'value' => [
+                            'empty_string' => '',
+                            'null_value' => null,
+                            'false_value' => false,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $result = stylish($diff);
+
+        $this->assertStringContainsString('    config: {', $result);
+        $this->assertStringContainsString('      + options: {', $result);
+        $this->assertStringContainsString('          empty_string:', $result);
+        $this->assertStringContainsString('          null_value: null', $result);
+        $this->assertStringContainsString('          false_value: false', $result);
+    }
 }
