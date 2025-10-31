@@ -49,4 +49,32 @@ class ParseFileTest extends TestCase
 
         unlink($invalidFile);
     }
+
+    /**
+     * @throws JsonException
+     */
+    public function testParseFileThrowsWhenFileNotReadable(): void
+    {
+        $file = tempnam(sys_get_temp_dir(), 'test');
+        chmod($file, 0000);
+
+        $this->expectException(ParseException::class);
+        parseFile($file);
+
+        unlink($file);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testParseFileThrowsWhenYamlInvalid(): void
+    {
+        $file = tempnam(sys_get_temp_dir(), 'test');
+        file_put_contents($file, ":\n  invalid_yaml");
+
+        $this->expectException(ParseException::class);
+        parseFile($file);
+
+        unlink($file);
+    }
 }
