@@ -21,6 +21,7 @@
       "src/Gendiff.php",
       "src/Parsing/parse.php",
       "src/Differ/buildDiff.php",
+      "src/Formatters/json.php",
       "src/Formatters/stylish.php",
       "src/Formatters/plain.php",
       "src/Formatters.php"
