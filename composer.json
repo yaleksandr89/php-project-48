@@ -1,6 +1,6 @@
 {
   "name": "hexlet/code",
-  "description": "Difference calculator (JSON/YAML) with stylish, plain, json formatters",
+  "description": "Difference calculator (JSON/YAML) with stylish, plain, and json formatters",
   "type": "library",
   "license": "proprietary",
   "require": {
@@ -21,7 +21,9 @@
       "src/Gendiff.php",
       "src/Parsing/parse.php",
       "src/Differ/buildDiff.php",
-      "src/Formatters/stylish.php"
+      "src/Formatters/stylish.php",
+      "src/Formatters/plain.php",
+      "src/Formatters.php"
     ]
   },
   "autoload-dev": {
@@ -29,7 +31,9 @@
       "Gendiff\\Tests\\": "tests/"
     }
   },
-  "bin": ["bin/gendiff"],
+  "bin": [
+    "bin/gendiff"
+  ],
   "scripts": {
     "test": "phpunit --colors=always"
   }

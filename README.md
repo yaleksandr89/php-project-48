@@ -164,3 +164,12 @@ gendiff tests/Fixtures/file1.json tests/Fixtures/file2.json
   - Исключения при ошибках парсинга
   - Проверка функции `toString()`
 - Финальный результат: **OK (8 tests, 8 assertions)**
+
+### Сравнение в формате Plain
+
+[![asciinema gendiff plain demo](https://asciinema.org/a/mkUlgLCDfti2jffl14RdvU5UK.svg)](https://asciinema.org/a/mkUlgLCDfti2jffl14RdvU5UK)
+
+**В записи показано:**
+- Запуск команды `gendiff`
+- Сравнение двух файлов с ключом `--format plain`
+- Отображение изменений в текстовом виде
