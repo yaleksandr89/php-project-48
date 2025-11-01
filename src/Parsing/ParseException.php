@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Gendiff\Parsing;
+namespace Differ\Parsing;
 
 use Exception;
 

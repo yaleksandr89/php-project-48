@@ -1,14 +1,14 @@
 <?php
 
-namespace Gendiff\Tests;
+namespace Differ\Tests;
 
-use Gendiff\Formatters\FormattersException;
-use Gendiff\Parsing\ParseException;
+use Differ\Formatters\FormattersException;
+use Differ\Parsing\ParseException;
 use JsonException;
 use PHPUnit\Framework\TestCase;
 
-use function Gendiff\Formatters\stylish;
-use function Gendiff\genDiff;
+use function Differ\Formatters\stylish;
+use function Differ\Differ\genDiff;
 
 class GenDiffNestedTest extends TestCase
 {

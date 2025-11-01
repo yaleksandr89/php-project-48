@@ -1,10 +1,10 @@
 <?php
 
-namespace Gendiff\Tests;
+namespace Differ\Tests;
 
 use PHPUnit\Framework\TestCase;
 
-use function Gendiff\genDiff;
+use function Differ\Differ\genDiff;
 
 class GenDiffYamlTest extends TestCase
 {

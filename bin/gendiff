@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use function Gendiff\genDiff;
+use function Differ\Differ\genDiff;
 
 const APP_VERSION = 'gendiff 0.1.0';
 

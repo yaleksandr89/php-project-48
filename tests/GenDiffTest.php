@@ -1,15 +1,15 @@
 <?php
 
-namespace Gendiff\Tests;
+namespace Differ\Tests;
 
-use Gendiff\Parsing\ParseException;
+use Differ\Parsing\ParseException;
 use JsonException;
 use PHPUnit\Framework\TestCase;
 use ReflectionFunction;
 
-use function Gendiff\genDiff;
-use function Gendiff\Parsing\parseFile;
-use function Gendiff\toString;
+use function Differ\Differ\genDiff;
+use function Differ\Parsing\parseFile;
+use function Differ\Differ\toString;
 
 class GenDiffTest extends TestCase
 {
@@ -72,7 +72,7 @@ class GenDiffTest extends TestCase
 
     public function testToStringWithNullValue(): void
     {
-        $ref = new ReflectionFunction('Gendiff\\toString');
+        $ref = new ReflectionFunction('Differ\\Differ\\toString');
         $result = $ref->invoke(null);
         $this->assertSame('null', $result);
     }

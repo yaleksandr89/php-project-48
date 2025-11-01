@@ -15,10 +15,10 @@
   },
   "autoload": {
     "psr-4": {
-      "Gendiff\\": "src/"
+      "Differ\\": "src/"
     },
     "files": [
-      "src/Gendiff.php",
+      "src/Differ.php",
       "src/Parsing/parse.php",
       "src/Differ/buildDiff.php",
       "src/Formatters/json.php",
@@ -29,13 +29,10 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Gendiff\\Tests\\": "tests/"
+      "Differ\\Tests\\": "tests/"
     }
   },
   "bin": [
     "bin/gendiff"
-  ],
-  "scripts": {
-    "test": "phpunit --colors=always"
-  }
+  ]
 }

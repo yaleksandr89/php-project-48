@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Gendiff;
+namespace Differ\Differ;
 
-use Gendiff\Formatters\FormattersException;
-use Gendiff\Parsing\ParseException;
+use Differ\Formatters\FormattersException;
+use Differ\Parsing\ParseException;
 use JsonException;
 
-use function Gendiff\Differ\buildDiff;
-use function Gendiff\Formatters\format;
-use function Gendiff\Parsing\parseFile;
+use function Differ\Formatters\format;
+use function Differ\Parsing\parseFile;
 
 /**
  * @throws ParseException

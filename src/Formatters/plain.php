@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Gendiff\Formatters;
+namespace Differ\Formatters;
 
 /**
  * Plain formatter — отображает изменения в виде строк

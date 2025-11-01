@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Gendiff\Differ;
+namespace Differ\Differ;
 
 function buildDiff(array $data1, array $data2): array
 {

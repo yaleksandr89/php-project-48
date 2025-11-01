@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Gendiff\Tests;
+namespace Differ\Tests;
 
-use Gendiff\Formatters\FormattersException;
-use Gendiff\Parsing\ParseException;
+use Differ\Formatters\FormattersException;
+use Differ\Parsing\ParseException;
 use JsonException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockBuilder;
 
-use function Gendiff\Formatters\stylish;
-use function Gendiff\Parsing\parseFile;
+use function Differ\Formatters\stylish;
+use function Differ\Parsing\parseFile;
 
 final class EdgeCasesTest extends TestCase
 {

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Gendiff\Tests;
+namespace Differ\Tests;
 
-use Gendiff\Formatters\FormattersException;
-use Gendiff\Parsing\ParseException;
+use Differ\Formatters\FormattersException;
+use Differ\Parsing\ParseException;
 use JsonException;
 use PHPUnit\Framework\TestCase;
 
-use function Gendiff\Formatters\plain;
-use function Gendiff\genDiff;
+use function Differ\Formatters\plain;
+use function Differ\Differ\genDiff;
 
 final class GenDiffPlainTest extends TestCase
 {
