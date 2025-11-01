@@ -41,7 +41,7 @@ src/
  ├── Parsing/            # Чтение и нормализация файлов
  ├── Gendiff.php         # Главный фасад проекта
 tests/
- ├── Fixtures/           # Тестовые данные
+ ├── fixtures/           # Тестовые данные
  ├── GenDiffTest.php
  ├── GenDiffNestedTest.php
 ```
@@ -170,6 +170,17 @@ gendiff tests/Fixtures/file1.json tests/Fixtures/file2.json
 [![asciinema gendiff plain demo](https://asciinema.org/a/mkUlgLCDfti2jffl14RdvU5UK.svg)](https://asciinema.org/a/mkUlgLCDfti2jffl14RdvU5UK)
 
 **В записи показано:**
+
 - Запуск команды `gendiff`
 - Сравнение двух файлов с ключом `--format plain`
 - Отображение изменений в текстовом виде
+
+### Сравнение в формате JSON
+
+[![asciinema gendiff JSON format demo](https://asciinema.org/a/1skNeceSbU01xcCKQ8WYBxWP6.svg)](https://asciinema.org/a/1skNeceSbU01xcCKQ8WYBxWP6)
+
+**В записи показано:**
+
+- Запуск команды `gendiff` с ключом `--format json`
+- Сравнение двух JSON-файлов
+- Вывод результата в формате JSON
