@@ -27,10 +27,8 @@ $args = Docopt::handle($doc, [
         'version' => APP_VERSION,
 ]);
 
-$first = $args['<firstFile>'] ?? null;
-$second = $args['<secondFile>'] ?? null;
-$format = $args['--format'] ?? 'stylish';
-
-if ($first !== null && $second !== null) {
-    echo genDiff($first, $second, $format) . PHP_EOL;
-}
+echo genDiff(
+                $args['<firstFile>'],
+                $args['<secondFile>'],
+                $args['--format']
+        ) . PHP_EOL;
