@@ -11,73 +11,67 @@ use Differ\Exceptions\FormattersException;
  */
 function stylish(array $diff, int $depth = 1): string
 {
-    $indent = str_repeat('    ', $depth - 1);
+    $indentUnit = '    ';
+    $currentIndent = str_repeat($indentUnit, $depth - 1);
 
-    $makeValue = static function (mixed $value, int $depth) use (&$makeValue): string {
+    $renderValue = static function (mixed $value, int $depth) use (&$renderValue, $indentUnit): string {
         if (!is_array($value)) {
-            return toString($value);
+            if (is_bool($value)) {
+                return $value ? 'true' : 'false';
+            }
+            if ($value === null) {
+                return 'null';
+            }
+            return (string)$value;
         }
 
-        $innerIndent = str_repeat('    ', $depth);
-        $closingIndent = str_repeat('    ', $depth - 1);
+        $indent = str_repeat($indentUnit, $depth);
+        $closingIndent = str_repeat($indentUnit, $depth - 1);
         $lines = [];
-
         foreach ($value as $k => $v) {
-            $rendered = is_array($v) ? $makeValue($v, $depth + 1) : toString($v);
-            $lines[] = $rendered === ''
-                ? "{$innerIndent}    {$k}:"
-                : "{$innerIndent}    {$k}: {$rendered}";
+            $lines[] = "{$indent}{$k}: {$renderValue($v, $depth + 1)}";
         }
 
-        return "{\n" . implode("\n", $lines) . "\n{$closingIndent}    }";
-    };
-
-    $renderKV = static function (string $prefix, string $key, mixed $value, int $depth) use ($makeValue): string {
-        $val = $makeValue($value, $depth);
-
-        return $val === '' ? "{$prefix}{$key}:" : "{$prefix}{$key}: {$val}";
+        return "{\n" . implode("\n", $lines) . "\n{$closingIndent}}";
     };
 
     $lines = [];
 
     foreach ($diff as $node) {
-        switch ($node['type']) {
+        $type = $node['type'] ?? '';
+        $key = $node['key'] ?? '';
+        switch ($type) {
             case 'added':
-                $lines[] = $renderKV("{$indent}  + ", $node['key'], $node['value'], $depth);
+                $value = $renderValue($node['value'], $depth + 1);
+                $lines[] = "{$currentIndent}  + {$key}: {$value}";
                 break;
 
             case 'removed':
-                $lines[] = $renderKV("{$indent}  - ", $node['key'], $node['value'], $depth);
+                $value = $renderValue($node['value'], $depth + 1);
+                $lines[] = "{$currentIndent}  - {$key}: {$value}";
                 break;
 
             case 'unchanged':
-                $lines[] = $renderKV("{$indent}    ", $node['key'], $node['value'], $depth);
-                break;
-
-            case 'changed':
-                $lines[] = $renderKV("{$indent}  - ", $node['key'], $node['oldValue'], $depth);
-                $lines[] = $renderKV("{$indent}  + ", $node['key'], $node['newValue'], $depth);
+                $value = $renderValue($node['value'], $depth + 1);
+                $lines[] = "{$currentIndent}    {$key}: {$value}";
                 break;
 
             case 'nested':
                 $children = stylish($node['children'], $depth + 1);
-                $lines[] = "{$indent}    {$node['key']}: {$children}";
+                $lines[] = "{$currentIndent}    {$key}: " . ltrim($children);
+                break;
+
+            case 'changed':
+                $old = $renderValue($node['oldValue'], $depth + 1);
+                $new = $renderValue($node['newValue'], $depth + 1);
+                $lines[] = "{$currentIndent}  - {$key}: {$old}";
+                $lines[] = "{$currentIndent}  + {$key}: {$new}";
                 break;
 
             default:
-                throw new FormattersException("Unknown type: {$node['type']}");
+                throw new FormattersException("Unknown node type: {$type}");
         }
     }
 
-    return "{\n" . implode("\n", $lines) . "\n{$indent}}";
-}
-
-function toString(mixed $value): string
-{
-    return match (true) {
-        is_bool($value) => $value ? 'true' : 'false',
-        $value === null => 'null',
-        // пустая строка должна остаться пустой — это ключевой момент для "- wow:"
-        default => (string)$value,
-    };
+    return "{\n" . implode("\n", $lines) . "\n{$currentIndent}}";
 }
