@@ -18,13 +18,13 @@
       "Differ\\": "src/"
     },
     "files": [
-      "src/Differ.php",
-      "src/Parsing/parse.php",
-      "src/Differ/buildDiff.php",
-      "src/Formatters/json.php",
-      "src/Formatters/stylish.php",
-      "src/Formatters/plain.php",
-      "src/Formatters.php"
+      "src/Differ/Differ.php",
+      "src/Differ/BuildDiff.php",
+      "src/Parsing/Parse.php",
+      "src/Formatters/Dispatcher.php",
+      "src/Formatters/Json.php",
+      "src/Formatters/Plain.php",
+      "src/Formatters/Stylish.php"
     ]
   },
   "autoload-dev": {
