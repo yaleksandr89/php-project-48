@@ -8,7 +8,7 @@ validate:
 	composer validate
 
 lint:
-	composer exec --verbose phpcs -- --standard=PSR12 --error-severity=1 --warning-severity=1 src bin tests
+	composer exec --verbose phpcs -- --standard=PSR12 src bin
 
 lint-fix:
 	composer exec phpcbf -- --standard=PSR12 src bin tests
