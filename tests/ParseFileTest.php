@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Differ\Tests;
 
-use Differ\Parsing\ParseException;
+use Differ\Exceptions\ParseException;
 use JsonException;
 use PHPUnit\Framework\TestCase;
 

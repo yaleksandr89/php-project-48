@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Differ\Formatters;
+namespace Differ\Exceptions;
 
 use Exception;
 

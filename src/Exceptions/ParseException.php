@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Differ\Parsing;
+namespace Differ\Exceptions;
 
 use Exception;
 

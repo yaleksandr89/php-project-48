@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Differ\Parsing;
 
+use Differ\Exceptions\ParseException;
 use JsonException;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException as YamlParseException;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Рекурсивно приводит stdClass к массивам.

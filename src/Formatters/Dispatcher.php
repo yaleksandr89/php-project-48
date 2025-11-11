@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Differ\Formatters;
 
+use Differ\Exceptions\FormattersException;
 use JsonException;
 
 /**

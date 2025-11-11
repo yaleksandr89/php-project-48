@@ -2,14 +2,14 @@
 
 namespace Differ\Tests;
 
-use Differ\Parsing\ParseException;
+use Differ\Exceptions\ParseException;
 use JsonException;
 use PHPUnit\Framework\TestCase;
 use ReflectionFunction;
 
 use function Differ\Differ\genDiff;
-use function Differ\Parsing\parseFile;
 use function Differ\Differ\toString;
+use function Differ\Parsing\parseFile;
 
 class GenDiffTest extends TestCase
 {

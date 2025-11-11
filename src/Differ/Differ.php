@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Differ\Differ;
 
-use Differ\Formatters\FormattersException;
-use Differ\Parsing\ParseException;
+use Differ\Exceptions\FormattersException;
+use Differ\Exceptions\ParseException;
 use JsonException;
 
 use function Differ\Formatters\format;

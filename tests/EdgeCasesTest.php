@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Differ\Tests;
 
-use Differ\Formatters\FormattersException;
-use Differ\Parsing\ParseException;
+use Differ\Exceptions\FormattersException;
+use Differ\Exceptions\ParseException;
 use JsonException;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\MockObject\MockBuilder;
 
 use function Differ\Formatters\stylish;
 use function Differ\Parsing\parseFile;

@@ -2,13 +2,13 @@
 
 namespace Differ\Tests;
 
-use Differ\Formatters\FormattersException;
-use Differ\Parsing\ParseException;
+use Differ\Exceptions\FormattersException;
+use Differ\Exceptions\ParseException;
 use JsonException;
 use PHPUnit\Framework\TestCase;
 
-use function Differ\Formatters\stylish;
 use function Differ\Differ\genDiff;
+use function Differ\Formatters\stylish;
 
 class GenDiffNestedTest extends TestCase
 {

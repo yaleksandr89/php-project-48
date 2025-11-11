@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Differ\Formatters;
 
+use Differ\Exceptions\FormattersException;
+
 /**
  * Plain formatter — отображает изменения в виде строк
  * @throws FormattersException
