@@ -9,7 +9,8 @@ use Differ\Exceptions\ParseException;
 use JsonException;
 
 use function Differ\Formatters\format;
-use function Differ\Parsing\parseFile;
+use function Differ\Parsing\readFile;
+use function Differ\Parsing\parse;
 
 /**
  * @throws ParseException
@@ -18,8 +19,14 @@ use function Differ\Parsing\parseFile;
  */
 function genDiff(string $path1, string $path2, string $format = 'stylish'): string
 {
-    $data1 = parseFile($path1);
-    $data2 = parseFile($path2);
+    $content1 = readFile($path1);
+    $content2 = readFile($path2);
+
+    $ext1 = pathinfo($path1, PATHINFO_EXTENSION);
+    $ext2 = pathinfo($path2, PATHINFO_EXTENSION);
+
+    $data1 = parse($content1, $ext1);
+    $data2 = parse($content2, $ext2);
 
     $diff = buildDiff($data1, $data2);
 
