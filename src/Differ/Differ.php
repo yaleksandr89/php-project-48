@@ -11,6 +11,7 @@ use JsonException;
 use function Differ\Formatters\format;
 use function Differ\Differ\readFile;
 use function Differ\Parsing\parse;
+use function Funct\Collection\sortBy;
 
 /**
  * @throws ParseException
@@ -33,7 +34,7 @@ function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'sty
 function buildDiff(array $data1, array $data2): array
 {
     $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
-    sort($keys);
+    $sortedKeys = array_values(sortBy($keys, fn($key) => (string)$key));
 
     return array_map(static function ($key) use ($data1, $data2) {
         $value1 = $data1[$key] ?? null;
@@ -70,7 +71,7 @@ function buildDiff(array $data1, array $data2): array
         }
 
         return $result;
-    }, $keys);
+    }, $sortedKeys);
 }
 
 function toString(mixed $value): string
