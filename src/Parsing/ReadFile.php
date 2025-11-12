@@ -9,7 +9,7 @@ use Differ\Exceptions\ParseException;
 /**
  * @throws ParseException
  */
-function readFile(string $path): string
+function readFile(string $path): array
 {
     if (!file_exists($path)) {
         throw new ParseException("File '{$path}' does not exist");
@@ -20,5 +20,10 @@ function readFile(string $path): string
         throw new ParseException("Cannot read file '{$path}'");
     }
 
-    return $content;
+    $extension = pathinfo($path, PATHINFO_EXTENSION);
+
+    return [
+        'content' => $content,
+        'extension' => $extension,
+    ];
 }

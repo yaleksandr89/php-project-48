@@ -17,16 +17,13 @@ use function Differ\Parsing\parse;
  * @throws JsonException
  * @throws FormattersException
  */
-function genDiff(string $path1, string $path2, string $format = 'stylish'): string
+function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'stylish'): string
 {
-    $content1 = readFile($path1);
-    $content2 = readFile($path2);
+    $file1 = readFile($pathToFile1);
+    $file2 = readFile($pathToFile2);
 
-    $ext1 = pathinfo($path1, PATHINFO_EXTENSION);
-    $ext2 = pathinfo($path2, PATHINFO_EXTENSION);
-
-    $data1 = parse($content1, $ext1);
-    $data2 = parse($content2, $ext2);
+    $data1 = parse($file1['content'], $file1['extension']);
+    $data2 = parse($file2['content'], $file2['extension']);
 
     $diff = buildDiff($data1, $data2);
 
