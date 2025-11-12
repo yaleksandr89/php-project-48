@@ -19,8 +19,12 @@
 
 ## Описание проекта
 
-**Gendiff** — CLI-утилита на PHP 8.3 для сравнения конфигурационных файлов **JSON** и **YAML**. Определяет различия между файлами, формируя иерархическое diff-дерево с поддержкой
-вложенных структур. Поддерживает несколько форматов вывода: `stylish`, `plain`, `json`.
+**Gendiff** — CLI‑утилита на PHP 8.3 для сравнения конфигурационных файлов **JSON** и **YAML (YML)**.  
+Определяет различия между файлами, формируя иерархическое *diff‑дерево* с поддержкой вложенных структур.  
+Поддерживает несколько форматов вывода:
+- **stylish** — древовидный формат (по умолчанию)
+- **plain** — текстовый человеко‑читаемый формат
+- **json** — JSON‑вывод для машинной обработки
 
 ## Технологии
 
@@ -36,34 +40,32 @@
 
 ```
 src/
- ├── Differ/             # Построение дерева различий
- ├── Formatters/         # Форматтеры вывода (stylish, plain, json)
- ├── Parsing/            # Чтение и нормализация файлов
- ├── Gendiff.php         # Главный фасад проекта
+ ├── Differ/         # Построение дерева различий (genDiff, buildDiff, readFile)
+ ├── Formatters/     # Форматтеры вывода: stylish, plain, json
+ ├── Parsing/        # Парсинг и чтение файлов
 tests/
- ├── fixtures/           # Тестовые данные
- ├── GenDiffTest.php
- ├── GenDiffNestedTest.php
+ └── DifferTest.php  # Тесты с DataProvider (json/yml × 4 формата вывода)
+bin/
+ └── gendiff         # CLI‑входная точка
 ```
 
 ## Команды Makefile
 
-| Команда               | Назначение                                         |
-|-----------------------|----------------------------------------------------|
-| `make install`        | Установить зависимости Composer                    |
-| `make refresh`        | Установить зависимости и перегенерировать autoload |
-| `make validate`       | Проверить корректность composer.json               |
-| `make lint`           | Проверить код по стандарту PSR-12                  |
-| `make lint-fix`       | Автоматически исправить ошибки форматирования      |
-| `make test`           | Запустить PHPUnit-тесты с подсветкой               |
-| `make gendiff-nested` | Проверить работу утилиты на вложенных JSON-файлах  |
+| Команда             | Назначение                                    |
+|---------------------|-----------------------------------------------|
+| `make install`      | Установить зависимости Composer               |
+| `make validate`     | Проверить composer.json                       |
+| `make lint`         | Проверить код по стандарту PSR‑12             |
+| `make lint-fix`     | Исправить форматирование                      |
+| `make test`         | Запустить PHPUnit‑тесты                       |
+| `make refresh`      | Полная переустановка зависимостей             |
 
 ---
 
 ## Установка
 
 ```bash
-git clone https://github.com/<твой-username>/gendiff.git
+git clone https://github.com/yaleksandr89/php-project-48.git
 cd gendiff
 make install
 ```
@@ -79,24 +81,86 @@ make install
 gendiff -h
 ```
 
-Пример сравнения двух файлов (на примере JSON):
+## Примеры работы
+
+### Формат Stylish (по умолчанию)
 
 ```bash
 gendiff tests/Fixtures/file1.json tests/Fixtures/file2.json
 ```
 
-Результат:
+Вывод:
 
 ```bash
 {
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
+    common: {
+      + follow: false
+        setting1: Value 1
+      - setting2: 200
+      - setting3: true
+      + setting3: null
+      + setting4: blah blah
+      + setting5: {
+            key5: value5
+        }
+        setting6: {
+            doge: {
+              - wow:
+              + wow: so much
+            }
+            key: value
+          + ops: vops
+        }
+    }
+    group1: {
+      - baz: bas
+      + baz: bars
+        foo: bar
+      - nest: {
+            key: value
+        }
+      + nest: str
+    }
+  - group2: {
+        abc: 12345
+        deep: { id: 45 }
+    }
+  + group3: {
+        deep: { id: { number: 45 } }
+        fee: 100500
+    }
 }
 ```
+
+### Формат Plain
+
+```bash
+gendiff tests/Fixtures/file1.yml tests/Fixtures/file2.yml --format plain
+```
+
+Вывод:
+
+```
+Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]
+```
+
+### Формат JSON
+
+```bash
+gendiff tests/Fixtures/file1.json tests/Fixtures/file2.json --format json
+```
+
+Вывод аналогичен файлу `tests/Fixtures/jsonExcepted.txt`.
 
 ---
 
