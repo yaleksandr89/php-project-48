@@ -20,7 +20,7 @@
     "files": [
       "src/Differ/Differ.php",
       "src/Parsing/Parse.php",
-      "src/Parsing/ReadFile.php",
+      "src/Differ/ReadFile.php",
       "src/Formatters/Dispatcher.php",
       "src/Formatters/Json.php",
       "src/Formatters/Plain.php",

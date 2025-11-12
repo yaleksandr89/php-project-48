@@ -9,7 +9,7 @@ use Differ\Exceptions\ParseException;
 use JsonException;
 
 use function Differ\Formatters\format;
-use function Differ\Parsing\readFile;
+use function Differ\Differ\readFile;
 use function Differ\Parsing\parse;
 
 /**
