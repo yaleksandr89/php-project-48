@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Differ\Formatters;
+namespace Differ\Formatters\Plain;
 
 use Differ\Exceptions\FormattersException;
 
@@ -10,7 +10,7 @@ use Differ\Exceptions\FormattersException;
  * Plain formatter — отображает изменения в виде строк
  * @throws FormattersException
  */
-function plain(array $diff): string
+function render(array $diff): string
 {
     $lines = buildPlain($diff);
 

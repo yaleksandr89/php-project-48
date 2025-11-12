@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Differ\Formatters;
+namespace Differ\Formatters\Stylish;
 
 use Differ\Exceptions\FormattersException;
 
 /**
  * @throws FormattersException
  */
-function stylish(array $diff, int $depth = 1): string
+function render(array $diff, int $depth = 1): string
 {
     $indentUnit = '    ';
     $currentIndent = str_repeat($indentUnit, $depth - 1);
@@ -57,7 +57,7 @@ function stylish(array $diff, int $depth = 1): string
                 break;
 
             case 'nested':
-                $children = stylish($node['children'], $depth + 1);
+                $children = render($node['children'], $depth + 1);
                 $lines[] = "{$currentIndent}    {$key}: " . ltrim($children);
                 break;
 
