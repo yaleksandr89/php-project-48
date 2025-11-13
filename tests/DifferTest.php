@@ -11,31 +11,18 @@ use function Differ\Differ\genDiff;
 
 final class DifferTest extends TestCase
 {
-    public static function providerDiffCases(): array
+    public static function providerFiles(): array
     {
-        $fixtures = [
-            'default' => file_get_contents(__DIR__ . '/Fixtures/stylishExcepted.txt'),
-            'stylish' => file_get_contents(__DIR__ . '/Fixtures/stylishExcepted.txt'),
-            'plain'   => file_get_contents(__DIR__ . '/Fixtures/plainExcepted.txt'),
-            'json'    => file_get_contents(__DIR__ . '/Fixtures/jsonExcepted.txt'),
+        return [
+            'json_files' => [
+                self::getFixturePath('file1.json'),
+                self::getFixturePath('file2.json'),
+            ],
+            'yml_files' => [
+                self::getFixturePath('file1.yml'),
+                self::getFixturePath('file2.yml'),
+            ],
         ];
-
-        $extensions = ['json', 'yml'];
-
-        $cases = [];
-
-        foreach (['default', 'stylish', 'plain', 'json'] as $format) {
-            foreach ($extensions as $ext) {
-                $cases["{$format}_{$ext}"] = [
-                    $fixtures[$format],
-                    self::getFixturePath("file1.{$ext}"),
-                    self::getFixturePath("file2.{$ext}"),
-                    $format,
-                ];
-            }
-        }
-
-        return $cases;
     }
 
     private static function getFixturePath(string $filename): string
@@ -43,13 +30,35 @@ final class DifferTest extends TestCase
         return __DIR__ . "/Fixtures/{$filename}";
     }
 
-    #[DataProvider('providerDiffCases')]
-    public function testDiff(string $expected, string $file1, string $file2, string $format): void
+    #[DataProvider('providerFiles')]
+    public function testDefault(string $file1, string $file2): void
     {
-        if ($format === 'default') {
-            $this->assertSame($expected, genDiff($file1, $file2));
-        } else {
-            $this->assertSame($expected, genDiff($file1, $file2, $format));
-        }
+        $expected = file_get_contents(__DIR__ . '/Fixtures/stylishExcepted.txt');
+
+        $this->assertSame($expected, genDiff($file1, $file2));
+    }
+
+    #[DataProvider('providerFiles')]
+    public function testStylish(string $file1, string $file2): void
+    {
+        $expected = file_get_contents(__DIR__ . '/Fixtures/stylishExcepted.txt');
+
+        $this->assertSame($expected, genDiff($file1, $file2, 'stylish'));
+    }
+
+    #[DataProvider('providerFiles')]
+    public function testPlain(string $file1, string $file2): void
+    {
+        $expected = file_get_contents(__DIR__ . '/Fixtures/plainExcepted.txt');
+
+        $this->assertSame($expected, genDiff($file1, $file2, 'plain'));
+    }
+
+    #[DataProvider('providerFiles')]
+    public function testJson(string $file1, string $file2): void
+    {
+        $expected = file_get_contents(__DIR__ . '/Fixtures/jsonExcepted.txt');
+
+        $this->assertSame($expected, genDiff($file1, $file2, 'json'));
     }
 }
